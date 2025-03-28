@@ -61,7 +61,7 @@ local function UpdateTooltip()
   local _, class = UnitClass(unit)
   local guild, rankstr, rankid = GetGuildInfo(unit)
   local reaction = UnitReaction(unit, "player")
-  local pvptitle = gsub(pvpname or name, " "..name, "", 1)
+  local pvptitle = gsub(pvpname or name, "^" .. name .. "%s*", "", 1)
 
   if name then
     if UnitIsPlayer(unit) and class then
@@ -76,8 +76,10 @@ local function UpdateTooltip()
       local color = UnitReactionColor[reaction]
       GameTooltipStatusBar:SetStatusBarColor_orig(color.r, color.g, color.b)
     end
-    if pvptitle ~= name then
+    if pvptitle ~= name and pvptitle ~= "" then
       GameTooltip:AppendText(" |cff666666["..pvptitle.."]|r")
+    elseif pvptitle == "" then
+      pvptitle = nil
     end
   end
 
